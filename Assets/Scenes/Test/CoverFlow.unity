@@ -324,14 +324,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_coverFlow: {fileID: 842242118}
   m_colourData:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 1, g: 1, b: 0, a: 1}
-  - {r: 0, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0, b: 1, a: 1}
-  - {r: 1, g: 0.6117647, b: 0, a: 1}
-  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 1, a: 0}
+  - {r: 0, g: 1, b: 0, a: 0}
+  - {r: 1, g: 1, b: 0, a: 0}
+  - {r: 0, g: 1, b: 1, a: 0}
+  - {r: 1, g: 0, b: 1, a: 0}
+  - {r: 1, g: 0.6117647, b: 0, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  sprites: []
   m_numberOfCells: 12
   m_groupSizes: 1
 --- !u!4 &997561207
@@ -403,6 +404,7 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 1, a: 1}
   - {r: 1, g: 0.6117647, b: 0, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
+  sprites: []
   m_numberOfCells: 50
   m_groupSizes: 10
 --- !u!1 &1142390944
