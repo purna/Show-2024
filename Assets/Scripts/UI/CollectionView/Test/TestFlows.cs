@@ -13,7 +13,16 @@ public class TestFlows : MonoBehaviour {
     private Color[] m_colourData;
 
     [SerializeField]
-    private Sprite[] sprites;
+    private Sprite[] m_sprites;
+
+    [SerializeField]
+    private Texture2D[] m_textures;
+
+    [SerializeField]
+    private RawImage[] m_rawimages;
+
+    [SerializeField]
+    private Image[] m_images;
 
     [SerializeField]
     private int m_numberOfCells = 10;
@@ -33,7 +42,14 @@ public class TestFlows : MonoBehaviour {
             {
                 if(m_colourData!=null && m_colourData.Length > 0)
                 {
-                    data.Add(new QuadCell.QuadCellData() { MainColor = new Vector4(1,1,1,0)});
+                    data.Add(new QuadCell.QuadCellData() {
+                        MainColor = new Vector4(1,1,1,0),
+                        MainTexture = m_textures[i],
+                        MainSprite = m_sprites[i]
+
+                    }
+
+                    );
                 }
                 else
                 {

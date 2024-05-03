@@ -191,7 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_animTime: 1
   m_maxCells: 16
-  m_positionOffsetScale: {x: 0.25, y: 0.25, z: 0}
+  m_positionOffsetScale: {x: 2.85, y: 0.25, z: 0}
   m_rotationOffsetScale: 20
   m_leftPosition: {x: -2.7, y: -1, z: 0}
   m_rightPosition: {x: 2, y: 0.7, z: 0}
@@ -324,17 +324,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_coverFlow: {fileID: 842242118}
   m_colourData:
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 1, a: 0}
-  - {r: 0, g: 1, b: 0, a: 0}
-  - {r: 1, g: 1, b: 0, a: 0}
-  - {r: 0, g: 1, b: 1, a: 0}
-  - {r: 1, g: 0, b: 1, a: 0}
-  - {r: 1, g: 0.6117647, b: 0, a: 0}
   - {r: 1, g: 1, b: 1, a: 0}
-  sprites: []
-  m_numberOfCells: 12
-  m_groupSizes: 1
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  m_sprites:
+  - {fileID: 21300000, guid: 741ea44127ab34df8a7d10ab020facbd, type: 3}
+  - {fileID: 21300000, guid: 741ea44127ab34df8a7d10ab020facbd, type: 3}
+  - {fileID: 21300000, guid: 741ea44127ab34df8a7d10ab020facbd, type: 3}
+  - {fileID: 21300000, guid: 741ea44127ab34df8a7d10ab020facbd, type: 3}
+  - {fileID: 21300000, guid: bbb9c8b5cdd184b65996861d596f9422, type: 3}
+  - {fileID: 21300000, guid: 9daba76e8d6f844e7a20555bbe40c0dc, type: 3}
+  - {fileID: 21300000, guid: 5cdaee8ebcf5b416c86a4d044012c452, type: 3}
+  - {fileID: 21300000, guid: d907113140cd04cd9aac919bcd8b4d26, type: 3}
+  - {fileID: 21300000, guid: 6a3a7f56df14d4bf88bc6223dfe5a836, type: 3}
+  - {fileID: 21300000, guid: 5cdaee8ebcf5b416c86a4d044012c452, type: 3}
+  - {fileID: 21300000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 21300000, guid: 4ac98749c29624ba5960766d4a7c7b26, type: 3}
+  - {fileID: 21300000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 21300000, guid: 6a3a7f56df14d4bf88bc6223dfe5a836, type: 3}
+  - {fileID: 21300000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 21300000, guid: 6a3a7f56df14d4bf88bc6223dfe5a836, type: 3}
+  - {fileID: 21300000, guid: 78828150292e14ac1837301b72a7de42, type: 3}
+  - {fileID: 21300000, guid: 18d8ce2b7be7145919e5604bb51a7ada, type: 3}
+  m_textures:
+  - {fileID: 2800000, guid: bbb9c8b5cdd184b65996861d596f9422, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  - {fileID: 2800000, guid: ce1f41abd68d641df8f965f68015ba9a, type: 3}
+  m_rawimages: []
+  m_images: []
+  m_numberOfCells: 18
+  m_groupSizes: 3
 --- !u!4 &997561207
 Transform:
   m_ObjectHideFlags: 0
@@ -404,7 +453,10 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 1, a: 1}
   - {r: 1, g: 0.6117647, b: 0, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
-  sprites: []
+  m_sprites: []
+  m_textures: []
+  m_rawimages: []
+  m_images: []
   m_numberOfCells: 50
   m_groupSizes: 10
 --- !u!1 &1142390944
@@ -681,7 +733,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 20.78461
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -696,7 +748,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

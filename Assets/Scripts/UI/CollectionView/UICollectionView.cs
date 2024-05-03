@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class UICollectionView : MonoBehaviour {
+public class UICollectionView : MonoBehaviour
+{
 
     private enum DragState
     {
@@ -47,7 +48,7 @@ public class UICollectionView : MonoBehaviour {
     private Vector2 m_totalDrag = Vector2.zero;
     private bool Dirty { get; set; }
 
-	private CollectionViewLayout m_prevLayout;
+    private CollectionViewLayout m_prevLayout;
 
     private List<object> m_data;
     public List<object> Data
@@ -62,7 +63,7 @@ public class UICollectionView : MonoBehaviour {
             Dirty = true;
 
             //Instant
-            if(m_layout!=null)
+            if (m_layout != null)
                 m_layout.InstantLayout = true;
         }
     }
@@ -74,14 +75,14 @@ public class UICollectionView : MonoBehaviour {
     {
         m_prevLayout = m_layout;
 
-        if(m_cell!=null && m_layout!=null)
+        if (m_cell != null && m_layout != null)
             m_layout.RegisterCell(m_cell, OnCellClickEvent);
 
         //Register with any other components
-		CollectionViewLayout[] layouts = GetComponents<CollectionViewLayout>();
-		foreach(CollectionViewLayout layout in layouts)
+        CollectionViewLayout[] layouts = GetComponents<CollectionViewLayout>();
+        foreach (CollectionViewLayout layout in layouts)
         {
-            if(m_layout!=layout)
+            if (m_layout != layout)
                 layout.RegisterCell(m_cell, OnCellClickEvent);
         }
 
@@ -92,16 +93,16 @@ public class UICollectionView : MonoBehaviour {
     {
 #if UNITY_EDITOR
         KeyboardInput();
-        if(m_dragEnabled)
+        if (m_dragEnabled)
             MouseDrag();
 #elif UNITY_IPHONE
         if(m_dragEnabled)
             TouchDrag();
 #endif
 
-        if(m_prevLayout!=m_layout)
+        if (m_prevLayout != m_layout)
         {
-            m_layout.InstantLayout=true;
+            m_layout.InstantLayout = true;
             m_layout.CurrentIndex = m_prevLayout.CurrentIndex;
             Dirty = true;
             m_prevLayout = m_layout;
@@ -122,7 +123,7 @@ public class UICollectionView : MonoBehaviour {
         Dirty = true;
     }
 
-	public void SetLayout(CollectionViewLayout layout)
+    public void SetLayout(CollectionViewLayout layout)
     {
         layout.RegisterCell(m_cell, OnCellClickEvent);
         layout.CurrentIndex = m_layout.CurrentIndex;
@@ -134,12 +135,12 @@ public class UICollectionView : MonoBehaviour {
 
     public void StepLeft()
     {
-        if(m_layout.CurrentIndex > 0)
+        if (m_layout.CurrentIndex > 0)
         {
             m_layout.CurrentIndex--;
             Dirty = true;
         }
-        else if(m_layout.IndexWrap)
+        else if (m_layout.IndexWrap)
         {
             m_layout.CurrentIndex = Data.Count - 1;
             Dirty = true;
@@ -148,12 +149,12 @@ public class UICollectionView : MonoBehaviour {
 
     public void StepRight()
     {
-        if(m_layout.CurrentIndex < Data.Count - 1)
+        if (m_layout.CurrentIndex < Data.Count - 1)
         {
             m_layout.CurrentIndex++;
             Dirty = true;
         }
-        else if(m_layout.IndexWrap)
+        else if (m_layout.IndexWrap)
         {
             m_layout.CurrentIndex = 0;
             Dirty = true;
@@ -162,11 +163,11 @@ public class UICollectionView : MonoBehaviour {
 
     private void OnCellClickEvent(object sender, EventArgs e)
     {
-        if(!m_tapSelectEnabled || m_dragState == DragState.Dragging)
+        if (!m_tapSelectEnabled || m_dragState == DragState.Dragging)
             return;
 
-		iCollectionViewCell cell = sender as iCollectionViewCell;
-        if(cell!=null && m_layout!=null)
+        iCollectionViewCell cell = sender as iCollectionViewCell;
+        if (cell != null && m_layout != null)
         {
             StopDrag();
             m_layout.CurrentIndex = cell.Index;
@@ -176,14 +177,14 @@ public class UICollectionView : MonoBehaviour {
 
     private void KeyboardInput()
     {
-        if(m_layout!=null && Data.Count > 0)
+        if (m_layout != null && Data.Count > 0)
         {
-            if(Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 StepRight();
-                
+
             }
-            if(Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 StepLeft();
             }
@@ -192,19 +193,19 @@ public class UICollectionView : MonoBehaviour {
 
     private void MouseDrag()
     {
-        if(m_layout!=null && Data.Count > 0)
+        if (m_layout != null && Data.Count > 0)
         {
-            if(m_dragState == DragState.None)
+            if (m_dragState == DragState.None)
             {
                 //Look for drag start
-                if(Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0))
                 {
                     //See if we click on any cells, and snap to that
-                    Camera cam = (m_inputCamera!=null) ? m_inputCamera : Camera.main;
-                    
+                    Camera cam = (m_inputCamera != null) ? m_inputCamera : Camera.main;
+
                     RaycastHit hit;
                     Ray r = cam.ScreenPointToRay(Input.mousePosition);
-                    if(Physics.Raycast(r, out hit, float.MaxValue, m_inputDragLayer.value))
+                    if (Physics.Raycast(r, out hit, float.MaxValue, m_inputDragLayer.value))
                     {
                         //Click start
                         m_dragState = DragState.Starting;
@@ -217,53 +218,53 @@ public class UICollectionView : MonoBehaviour {
             {
                 //See if we've moved
                 //If no mouse stop
-                if(Input.GetMouseButton(0))
+                if (Input.GetMouseButton(0))
                 {
                     //Drag
                     Vector2 newPoint = Input.mousePosition;
                     Vector2 delta = m_lastScreenPos - newPoint;
-                    
+
                     //Normalize delta to screen size
                     delta.x /= Screen.width;
                     delta.y /= Screen.height;
 
-                    if(delta.x > m_maxDragAmount)
+                    if (delta.x > m_maxDragAmount)
                         delta.x = m_maxDragAmount;
-                    else if(delta.x < -m_maxDragAmount)
+                    else if (delta.x < -m_maxDragAmount)
                         delta.x = -m_maxDragAmount;
 
-                    if(delta.y > m_maxDragAmount)
+                    if (delta.y > m_maxDragAmount)
                         delta.y = m_maxDragAmount;
-                    else if(delta.y < -m_maxDragAmount)
+                    else if (delta.y < -m_maxDragAmount)
                         delta.y = -m_maxDragAmount;
 
-                    if(m_dragState == DragState.Starting)
+                    if (m_dragState == DragState.Starting)
                     {
                         //Tally up
                         m_totalDrag.x += Math.Abs(delta.x);
                         m_totalDrag.y += Math.Abs(delta.y);
-                        
+
                         //Dragged enough?
-                        if(m_totalDrag.x >= m_minDragAmount || m_totalDrag.y >= m_minDragAmount)
+                        if (m_totalDrag.x >= m_minDragAmount || m_totalDrag.y >= m_minDragAmount)
                             m_dragState = DragState.Dragging;
                     }
 
-                    if(m_dragState == DragState.Dragging)
+                    if (m_dragState == DragState.Dragging)
                     {
                         //Update index based off delta and drag speed
                         m_layout.CurrentIndex += delta.x * m_dragSpeed;
 
-                        if(m_layout.IndexWrap)
+                        if (m_layout.IndexWrap)
                         {
                             //Wrap the CUrrentIndex
-                            if(m_layout.CurrentIndex < 0)
+                            if (m_layout.CurrentIndex < 0)
                                 m_layout.CurrentIndex += Data.Count;
-                            else if(m_layout.CurrentIndex >= Data.Count)
+                            else if (m_layout.CurrentIndex >= Data.Count)
                                 m_layout.CurrentIndex -= Data.Count;
                         }
                         Dirty = true;
                     }
-                    
+
                     m_lastScreenPos = newPoint;
                 }
                 else
@@ -277,7 +278,7 @@ public class UICollectionView : MonoBehaviour {
     private void TouchDrag()
     {
         //Single touch only
-        if(Input.touchCount != 1)
+        if (Input.touchCount != 1)
         {
             StopDrag();
             return;
@@ -285,20 +286,20 @@ public class UICollectionView : MonoBehaviour {
 
         Touch t = Input.touches[0];
 
-        if(m_layout!=null && Data.Count > 0)
+        if (m_layout != null && Data.Count > 0)
         {
-            if(m_dragState == DragState.None)
+            if (m_dragState == DragState.None)
             {
                 //Look for touch start
-                if(t.phase == TouchPhase.Began)
+                if (t.phase == TouchPhase.Began)
                 {
                     //See if we click on any cells, and snap to that
-                    Camera cam = (m_inputCamera!=null) ? m_inputCamera : Camera.main;
-                    
+                    Camera cam = (m_inputCamera != null) ? m_inputCamera : Camera.main;
+
                     RaycastHit hit;
                     Vector3 point = new Vector3(t.position.x, t.position.y, 0);
                     Ray r = Camera.main.ScreenPointToRay(point);
-                    if(Physics.Raycast(r, out hit, float.MaxValue, m_inputDragLayer.value))
+                    if (Physics.Raycast(r, out hit, float.MaxValue, m_inputDragLayer.value))
                     {
                         //Click start
                         m_dragState = DragState.Starting;
@@ -309,56 +310,56 @@ public class UICollectionView : MonoBehaviour {
             }
             else
             {
-                if(t.phase == TouchPhase.Moved)
+                if (t.phase == TouchPhase.Moved)
                 {
                     //Drag
                     Vector2 newPoint = t.position;
                     Vector2 delta = m_lastScreenPos - newPoint;
-                    
+
                     //Normalize delta to screen size
                     delta.x /= Screen.width;
                     delta.y /= Screen.height;
-                    
-                    if(delta.x > m_maxDragAmount)
+
+                    if (delta.x > m_maxDragAmount)
                         delta.x = m_maxDragAmount;
-                    else if(delta.x < -m_maxDragAmount)
+                    else if (delta.x < -m_maxDragAmount)
                         delta.x = -m_maxDragAmount;
-                    
-                    if(delta.y > m_maxDragAmount)
+
+                    if (delta.y > m_maxDragAmount)
                         delta.y = m_maxDragAmount;
-                    else if(delta.y < -m_maxDragAmount)
+                    else if (delta.y < -m_maxDragAmount)
                         delta.y = -m_maxDragAmount;
-                    
-                    if(m_dragState == DragState.Starting)
+
+                    if (m_dragState == DragState.Starting)
                     {
                         //Tally up
                         m_totalDrag.x += Math.Abs(delta.x);
                         m_totalDrag.y += Math.Abs(delta.y);
-                        
+
                         //Dragged enough?
-                        if(m_totalDrag.x >= m_minDragAmount || m_totalDrag.y >= m_minDragAmount)
+                        if (m_totalDrag.x >= m_minDragAmount || m_totalDrag.y >= m_minDragAmount)
                             m_dragState = DragState.Dragging;
                     }
-                    
-                    if(m_dragState == DragState.Dragging)
+
+                    if (m_dragState == DragState.Dragging)
                     {
                         //Update index based off delta and drag speed
                         m_layout.CurrentIndex += delta.x * m_dragSpeed;
 
-                        if(m_layout.IndexWrap)
+                        if (m_layout.IndexWrap)
                         {
                             //Wrap the CUrrentIndex
-                            if(m_layout.CurrentIndex < 0)
+                            if (m_layout.CurrentIndex < 0)
                                 m_layout.CurrentIndex += Data.Count;
-                            else if(m_layout.CurrentIndex >= Data.Count)
+                            else if (m_layout.CurrentIndex >= Data.Count)
                                 m_layout.CurrentIndex -= Data.Count;
                         }
                         Dirty = true;
                     }
-                    
+
                     m_lastScreenPos = newPoint;
                 }
-                else if(t.phase != TouchPhase.Stationary)
+                else if (t.phase != TouchPhase.Stationary)
                 {
                     StopDrag();
                 }
@@ -378,31 +379,31 @@ public class UICollectionView : MonoBehaviour {
         //      - Store velocity of movement (either take last Delta, or maybe have a seperate velocity being set)
         //      - Coroutine or in Update, update the Index based off momentum until velocity is near 0
         //      - When done, snap to nearest index like below...
-        if(m_layout!=null)
+        if (m_layout != null)
         {
             m_layout.CurrentIndex = Mathf.Round(m_layout.CurrentIndex);
 
-            if(!m_layout.IndexWrap)
+            if (!m_layout.IndexWrap)
             {
-                if(m_layout.CurrentIndex < 0)
+                if (m_layout.CurrentIndex < 0)
                     m_layout.CurrentIndex = 0;
-                else if(m_layout.CurrentIndex > Data.Count - 1)
+                else if (m_layout.CurrentIndex > Data.Count - 1)
                     m_layout.CurrentIndex = Data.Count - 1;
             }
             else
             {
                 //Wrap the CUrrentIndex
-                if(m_layout.CurrentIndex < 0)
+                if (m_layout.CurrentIndex < 0)
                     m_layout.CurrentIndex += Data.Count;
-                else if(m_layout.CurrentIndex >= Data.Count)
+                else if (m_layout.CurrentIndex >= Data.Count)
                     m_layout.CurrentIndex -= Data.Count;
             }
         }
     }
 
-    void OnDrawGizmos() 
+    void OnDrawGizmos()
     {
-        if(m_dragPlane==null)
+        if (m_dragPlane == null)
             return;
 
         Gizmos.color = Color.red;

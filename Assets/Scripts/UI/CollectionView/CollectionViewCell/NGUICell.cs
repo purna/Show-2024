@@ -21,6 +21,7 @@ public class NGUICell : iCollectionViewCell {
 
     Material m_material;
     Renderer m_renderer;
+    Texture2D m_texture;
 
     public override void SetData(object data)
     {
@@ -42,6 +43,17 @@ public class NGUICell : iCollectionViewCell {
             {
                 m_material.color = quadData.MainColor;
                 m_renderer.material = m_material;
+            }
+        }
+
+        //Set Texture
+        if (m_material != null)
+        {
+            QuadCell.QuadCellData quadData = data as QuadCell.QuadCellData;
+            if (quadData != null && quadData.MainTexture != null)
+            {
+                //m_texture = quadData.MainTexture;
+                //m_renderer.sprite = m_texture;
             }
         }
     }
