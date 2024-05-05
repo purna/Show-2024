@@ -98,7 +98,7 @@ public class QuadCell : iCollectionViewCell
 
             if (m_sprite == null) { 
 
-                m_sprite = GetComponentInChildren<SpriteRenderer>();
+                m_sprite = gameObject.transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>(); // Hello. Michael here. I edited this to specificly go to the Image object because it was trying to change the border insted since it just goes to the closes sprite renderer in a child
 
                 m_sprite.sprite = quadData.MainSprite;
             }
