@@ -50,9 +50,9 @@ public class TestFlowsMichaelEdit : MonoBehaviour
     [Header("BorderReflectionChanges")]
     public byte Transparancy;
     
+     [SerializeField]
+    private bool EnableReflection;
 
-
-    [SerializeField]
     private GameObject Reflection;
 
     // Use this for initialization
@@ -98,7 +98,17 @@ public class TestFlowsMichaelEdit : MonoBehaviour
         else
         {
             //Reflection
-            Invoke("SetReflection", 0.1f);
+             Reflection = testCellPrefab.transform.GetChild(2).gameObject; // Get's the third child object from the TestCell prefab which is reflection.
+            if (!EnableReflection)
+            {
+                Reflection.SetActive(false);
+
+            }
+            else
+            {
+                Reflection.SetActive(true);
+
+            }
 
             //Border
             Border = testCellPrefab.transform.GetChild(0).gameObject; //This will always refrence the first child of the testcell prefab so if that's changed change this.

@@ -403,7 +403,7 @@ MonoBehaviour:
   BorderSize: {x: 1.8, y: 1.8}
   BorderColour: {r: 0, g: 0, b: 0, a: 1}
   Transparancy: 100
-  Reflection: {fileID: 0}
+  EnableReflection: 1
 --- !u!1 &1115345528
 GameObject:
   m_ObjectHideFlags: 0
