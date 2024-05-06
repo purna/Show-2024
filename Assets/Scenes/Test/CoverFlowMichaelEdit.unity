@@ -400,7 +400,7 @@ MonoBehaviour:
   m_numberOfCells: 18
   m_groupSizes: 3
   EnableBorders: 1
-  BorderSize: {x: 1.8, y: 1.8}
+  BorderSize: {x: 1.93, y: 0.98}
   BorderColour: {r: 0, g: 0, b: 0, a: 1}
   Transparancy: 100
   EnableReflection: 1
