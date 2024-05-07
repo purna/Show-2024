@@ -18,8 +18,12 @@ public class ObjectClickHandler : MonoBehaviour
 
     [SerializeField] GameObject containerRect;
 
-   
 
+
+
+    bool hasExecuted = false; // Flag to track if the action has been executed
+    int currentindex = 0;
+    int lastCurrentIndex = -1; // Store the last currentindex
 
 
 
@@ -91,10 +95,6 @@ public class ObjectClickHandler : MonoBehaviour
         int childCount = container.transform.childCount;
         //Button[] buttons = new Button[childCount];
 
-        bool hasExecuted = false; // Flag to track if the action has been executed
-        int currentindex = 0;
-        int lastCurrentIndex = -1; // Store the last currentindex
-
 
         GameObject[] buttons = new GameObject[childCount];
 
@@ -118,13 +118,9 @@ public class ObjectClickHandler : MonoBehaviour
             {
                 // buttons[i] = buttonComponent;
 
-
-
                 // Get the x and y positions of the child
                 float xPos = child.position.x;
                 float yPos = child.position.y;
-
-                
 
                 // Check if x and y are zero
                 if (xPos <= 1f && yPos <= 1f && xPos >= -1f && yPos >= -1f)
@@ -134,15 +130,22 @@ public class ObjectClickHandler : MonoBehaviour
 
                     reference = quadCellScript.index;
 
-                    if (!hasExecuted)
-                    {
-                        hasExecuted = true; // Set flag to true to indicate that the action has been executed
-                        callData(reference);
-                    }
-
-
                     currentindex = quadCellScript.index;
 
+                     //Debug.LogWarning("Request hasExecuted : " + hasExecuted);
+                     //Debug.LogWarning("Request currentindex : " + currentindex);
+                     //Debug.LogWarning("Request lastCurrentIndex : " + lastCurrentIndex);
+
+                    if (hasExecuted == false && currentindex == lastCurrentIndex)
+                        {
+                            hasExecuted = true; // Set flag to true to indicate that the action has been executed
+
+                            Debug.LogWarning("Request reference : " + reference);
+                            Debug.LogWarning("Request hasExecuted : " + hasExecuted);
+
+
+                            callData(reference);
+                        }
 
                     //Debug.Log("Child " + i + " - X: " + xPos + ", Y: " + yPos);
                 }
@@ -152,11 +155,7 @@ public class ObjectClickHandler : MonoBehaviour
                     quadCellScript.reference = 0;
 
                 }
-
-               
             }
-         
-
         }
 
         // Reset hasExecuted if currentindex is different from the last currentindex
@@ -164,10 +163,10 @@ public class ObjectClickHandler : MonoBehaviour
         {
             hasExecuted = false;
             lastCurrentIndex = currentindex; // Update lastCurrentIndex
+            //Debug.LogWarning("Request hasExecuted : " + hasExecuted);
+            //Debug.LogWarning("Request currentindex : " + currentindex);
+            //Debug.LogWarning("Request lastCurrentIndex : " + lastCurrentIndex);
         }
-
-
-
     }
 
 
@@ -196,7 +195,7 @@ public class ObjectClickHandler : MonoBehaviour
 
             StartCoroutine(LoadImage(data[3]));
 
-            //StartCoroutine(LoadRawImage(data[3]));
+            StartCoroutine(LoadRawImage(data[3]));
 
             string link = data[1];
             clickButton.GetComponent<Button>().onClick.RemoveAllListeners();

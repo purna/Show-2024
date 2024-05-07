@@ -172,6 +172,8 @@ public class UICollectionView : MonoBehaviour
             StopDrag();
             m_layout.CurrentIndex = cell.Index;
             Dirty = true;
+
+
         }
     }
 
