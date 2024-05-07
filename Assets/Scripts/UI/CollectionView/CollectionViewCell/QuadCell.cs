@@ -64,16 +64,18 @@ public class QuadCell : iCollectionViewCell
             get { return m_url; }
             set { m_url = value; }
         }
+
+     
+
     }
 
     public int index;
-    public int reference;
 
+    public int reference;
 
     public void Update()
     {
         index = Index;
-        reference = Reference;
     }
 
     

@@ -14,15 +14,18 @@ public class ObjectClickHandler : MonoBehaviour
     public RawImage rawImagePlaceholder;
     public Button clickButton;
 
-    [SerializeField] RectTransform containerRect;
+    public int reference;
 
-    public bool liveLink = true;
+    [SerializeField] GameObject containerRect;
+
+   
 
 
-    public Button[] buttons;
-    private RectTransform[] scollButtons;
 
-    public string googleSheetsURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQy3jQxng4KXs00w7bfcEm7-K3_eA7Ej1XnuIYgMLHp492xzRC59V0bWjNbfLbVYjvrWIHoz5eReIxH/pub?output=csv";
+
+    [SerializeField] Button[] buttons;
+    private RectTransform[] scrollButtons;
+
 
     private List<string> fourthColumnData = new List<string>();
 
@@ -31,124 +34,182 @@ public class ObjectClickHandler : MonoBehaviour
         get { return fourthColumnData; }
     }
 
-
-    //public string googleSheetsURL;
+    private List<string[]> rowData = new List<string[]>();
 
     private Dictionary<string, List<string>> buttonData = new Dictionary<string, List<string>>();
 
+    GoogleSheetDataLoader dataLoader;
+
+
     void Start()
     {
-        
-        StartCoroutine(LoadCSVMenuFromGoogleSheets());
+
+        dataLoader = GetComponent<GoogleSheetDataLoader>();
+        StartCoroutine(dataLoader.StartLoading());
+
+
+        // Set buttons to
+
+        GameObject container = containerRect; 
+        int childCount = container.transform.childCount;
+
+        Button[] buttons = new Button[childCount];
+
+        for (int i = 0; i < childCount; i++)
+        {
+            Transform child = container.transform.GetChild(i);
+            Button buttonComponent = child.GetComponent<Button>();
+
+            if (buttonComponent != null)
+            {
+                buttons[i] = buttonComponent;
+                Debug.LogWarning("Child added " + i + " or array.");
+            }
+            else
+            {
+                Debug.LogWarning("Child object at index " + i + " does not have a Button component.");
+            }
+        }
 
 
         // Add listeners to the buttons
         foreach (Button button in buttons)
         {
-            button.onClick.AddListener(() => OnButtonClicked(button.name));
+
+           // button.onClick.AddListener(() => OnButtonClicked(button.name));
         }
 
-        if (liveLink == true)
-        {
-            // Load CSV data from Google Sheets
-            Debug.Log("CSV Sheets");
-            StartCoroutine(LoadCSVFromGoogleSheets());
-
-        } else
-        {
-            // Load CSV data from the art.csv file in the Assets folder
-            Debug.Log("CSV Assets");
-            LoadCSVFromAssets();
-        }
-
+       
 
         
 
     }
 
-    void LoadCSVFromAssets()
+    private void Update()
     {
-        TextAsset csvFile = Resources.Load<TextAsset>("art");
-        if (csvFile != null)
-        {
-            string[] lines = csvFile.text.Split('\n');
+        GameObject container = containerRect;
+        int childCount = container.transform.childCount;
+        //Button[] buttons = new Button[childCount];
 
-            // Parse CSV data
-            for (int i = 0; i < lines.Length; i++)
+        bool hasExecuted = false; // Flag to track if the action has been executed
+        int currentindex = 0;
+        int lastCurrentIndex = -1; // Store the last currentindex
+
+
+        GameObject[] buttons = new GameObject[childCount];
+
+        for (int i = 0; i < childCount; i++)
+        {
+            Transform child = container.transform.GetChild(i);
+
+            // Store the child GameObject directly
+            buttons[i] = child.gameObject;
+      
+            Button buttonComponent = child.GetComponent<Button>();
+
+
+            // Access the QuadCell script attached to the child
+            QuadCell quadCellScript = child.GetComponent<QuadCell>();
+
+            //Debug.Log("Children in collection =  "+ childCount);
+
+
+            if (buttonComponent != null)
             {
-                string[] columns = lines[i].Split(',');
-                if (columns.Length >= 4)
+                // buttons[i] = buttonComponent;
+
+
+
+                // Get the x and y positions of the child
+                float xPos = child.position.x;
+                float yPos = child.position.y;
+
+                
+
+                // Check if x and y are zero
+                if (xPos <= 1f && yPos <= 1f && xPos >= -1f && yPos >= -1f)
                 {
-                    string buttonName = columns[0];
-                    if (!buttonData.ContainsKey(buttonName))
+                    // Set reference to 1 if both x and y are zero
+                    quadCellScript.reference = 1;
+
+                    reference = quadCellScript.index;
+
+                    if (!hasExecuted)
                     {
-                        buttonData[buttonName] = new List<string>();
+                        hasExecuted = true; // Set flag to true to indicate that the action has been executed
+                        callData(reference);
                     }
-                    buttonData[buttonName].AddRange(columns);
+
+
+                    currentindex = quadCellScript.index;
+
+
+                    //Debug.Log("Child " + i + " - X: " + xPos + ", Y: " + yPos);
                 }
-            }
+                else
+                {
+                    // Set reference to 0 if either x or y are non-zero
+                    quadCellScript.reference = 0;
 
-            // Debug prints
+                }
 
-            Debug.Log("Button data loaded:" + buttonData.GetType());
-            Debug.Log("Number of buttons: " + buttonData.Count);
-            foreach (KeyValuePair<string, List<string>> pair in buttonData)
-            {
-                Debug.Log("Button name: " + pair.Key);
+               
             }
+         
+
         }
-        else
+
+        // Reset hasExecuted if currentindex is different from the last currentindex
+        if (currentindex != lastCurrentIndex)
         {
-            Debug.LogError("Failed to load art.csv from the Assets folder.");
+            hasExecuted = false;
+            lastCurrentIndex = currentindex; // Update lastCurrentIndex
         }
+
+
+
     }
 
-    IEnumerator LoadCSVFromGoogleSheets()
+
+    void callData(int reference)
     {
 
-        using (UnityWebRequest www = UnityWebRequest.Get(googleSheetsURL))
+        LoadData(reference);
+
+    }
+    
+
+
+    void LoadData(int rowIndex)
+    {
+
+        // Retrieve row data by row index
+        //int rowIndex = 4; // 0-based index for the 5th row
+        string[] data = dataLoader.GetRowData(rowIndex);
+        if (data != null)
         {
-            yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                string[] lines = www.downloadHandler.text.Split('\n');
+            //Debug.LogError("Request Header : " + data[1]);
+            textHeaderPlaceholder.text = data[1];
+            //Debug.LogError("Request Description : " + data[4]);
+            textDescriptionPlaceholder.text = data[4];
 
-                // Parse CSV data
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    string[] columns = lines[i].Split(',');
-                    if (columns.Length >= 4)
-                    {
-                        string buttonName = columns[0];
-                        if (!buttonData.ContainsKey(buttonName))
-                        {
-                            buttonData[buttonName] = new List<string>();
-                        }
-                        buttonData[buttonName].AddRange(columns);
-                    }
-                }
+            StartCoroutine(LoadImage(data[3]));
 
-                // Debug prints
-  
-                Debug.Log("Button data loaded:" + buttonData.GetType());
-                Debug.Log("Number of buttons: " + buttonData.Count);
-                foreach (KeyValuePair<string, List<string>> pair in buttonData)
-                {
-                    Debug.Log("Button name: " + pair.Key);
-                }
-            }
-            else
-            {
-                Debug.LogError("Failed to load CSV from Google Sheets. Error: " + www.error);
-            }
-        }
+            //StartCoroutine(LoadRawImage(data[3]));
+
+            string link = data[1];
+            clickButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            clickButton.GetComponent<Button>().onClick.AddListener(() => OnPlaceholderButtonClicked(link));
+
+        }              
+        
     }
 
-    void OnButtonClicked(string buttonName)
-    {
-        Debug.Log("Button clicked: " + buttonName);
 
+    void LoadButtonData(string buttonName)
+    {
+       
         if (buttonData.ContainsKey(buttonName))
         {
             List<string> data = buttonData[buttonName];
@@ -158,7 +219,7 @@ public class ObjectClickHandler : MonoBehaviour
                 textHeaderPlaceholder.text = data[1];
                 //Debug.LogError("Request Description : " + data[4]);
                 textDescriptionPlaceholder.text = data[4];
-                
+
 
                 StartCoroutine(LoadImage(data[3]));
 
@@ -166,11 +227,11 @@ public class ObjectClickHandler : MonoBehaviour
 
                 if (data.Count >= 5)
                 {
-                    
+
                     string link = data[1];
                     clickButton.GetComponent<Button>().onClick.RemoveAllListeners();
                     clickButton.GetComponent<Button>().onClick.AddListener(() => OnPlaceholderButtonClicked(link));
-                   
+
                 }
             }
             else
@@ -182,6 +243,14 @@ public class ObjectClickHandler : MonoBehaviour
         {
             Debug.LogError("Button data not found for button: " + buttonName);
         }
+    }
+
+
+    void OnButtonClicked(string buttonName)
+    {
+        Debug.Log("Button clicked: " + buttonName);
+
+        LoadButtonData(buttonName);
     }
 
 
@@ -241,7 +310,14 @@ public class ObjectClickHandler : MonoBehaviour
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
                 Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
-                Transform child = containerRect.GetChild(i);
+
+                //if containerRect is a RectTransform
+                //Transform child = containerRect.GetChild(i);
+
+                GameObject container = containerRect; // Assuming containerRect is the GameObject
+                Transform child = container.transform.GetChild(i);
+
+
                 Image imageComponent = child.GetComponent<Image>();
                 if (imageComponent != null)
                 {
@@ -259,50 +335,6 @@ public class ObjectClickHandler : MonoBehaviour
         }
     }
 
-
-
-
-
-
-    public IEnumerator LoadCSVMenuFromGoogleSheets()
-    {
-        using (UnityWebRequest www = UnityWebRequest.Get(googleSheetsURL))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                string[] lines = www.downloadHandler.text.Split('\n');
-
-                // Parse CSV data
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    string[] columns = lines[i].Split(',');
-                    if (columns.Length >= 4)
-                    {
-                        fourthColumnData.Add(columns[3]); // Adding the fourth column data to the list
-                    }
-                }
-
-                Debug.Log("CSV data loaded successfully.");
-            }
-            else
-            {
-                Debug.LogError("Failed to load CSV from Google Sheets. Error: " + www.error);
-            }
-        }
-
-        int childCount = containerRect.childCount;
-        Debug.Log("children" + childCount);
-
-        /*
-        for (int i = 0; i < childCount; i++)
-        {
-            Debug.Log("Data menu" + fourthColumnData[i]);
-            StartCoroutine(LoadMenuImage(fourthColumnData[i], i));
-        }
-        */
-    }
 
 
     public void OnPlaceholderButtonClicked(string link)
