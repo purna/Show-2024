@@ -10,6 +10,8 @@ public abstract class iCollectionViewCell : MonoBehaviour
 
     public int Index { get; set; }
 
+    public int Reference { get; set; }
+
     public bool Snap { get; set; }
 
     public float FlowIndexOffset { get; set; }

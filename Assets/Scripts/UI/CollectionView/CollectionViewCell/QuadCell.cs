@@ -43,14 +43,42 @@ public class QuadCell : iCollectionViewCell
             get { return m_image; }
             set { m_image = value; }
         }
+
+        private String m_title;
+        public String MainTitle
+        {
+            get { return m_title; }
+            set { m_title = value; }
+        }
+
+        private String m_description;
+        public String MainDescription
+        {
+            get { return m_description; }
+            set { m_description = value; }
+        }
+
+        private String m_url;
+        public String MainURL
+        {
+            get { return m_url; }
+            set { m_url = value; }
+        }
     }
 
     public int index;
+    public int reference;
+
 
     public void Update()
     {
         index = Index;
+        reference = Reference;
     }
+
+    
+
+ 
 
     public override string NibName
     {
@@ -111,7 +139,7 @@ public class QuadCell : iCollectionViewCell
 
                 //m_material.SetTexture("_BaseMap", quadData.MainTexture);
 
-                m_renderer.material = m_material;
+                //m_renderer.material = m_material;
                 //m_renderer.transform.localScale = new Vector3(0.15f, 0.15f, 1);
 
             }

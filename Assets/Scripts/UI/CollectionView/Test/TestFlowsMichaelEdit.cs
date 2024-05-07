@@ -26,6 +26,15 @@ public class TestFlowsMichaelEdit : MonoBehaviour
     private Image[] m_images;
 
     [SerializeField]
+    private string[] m_title;
+
+    [SerializeField]
+    private string[] m_description;
+
+    [SerializeField]
+    private string[] m_url;
+
+    [SerializeField]
     private int m_numberOfCells = 10;
 
     [SerializeField]
@@ -70,7 +79,11 @@ public class TestFlowsMichaelEdit : MonoBehaviour
                     {
                         MainColor = new Vector4(1, 1, 1, 0),
                         MainTexture = m_textures[i],
-                        MainSprite = m_sprites[i]
+                        MainSprite = m_sprites[i],
+                        MainTitle = m_title[i],
+                        MainDescription = m_description[i],
+                        MainURL = m_url[i]
+
 
                     }
 
