@@ -16,9 +16,11 @@ public class ObjectClickHandler : MonoBehaviour
 
     public int reference;
 
+    public GameObject fadein;
+
     [SerializeField] GameObject containerRect;
 
-
+    public OpenAppFullScreen openAppFullScreen;
 
 
     bool hasExecuted = false; // Flag to track if the action has been executed
@@ -94,6 +96,11 @@ public class ObjectClickHandler : MonoBehaviour
         GameObject container = containerRect;
         int childCount = container.transform.childCount;
         //Button[] buttons = new Button[childCount];
+
+        if (textHeaderPlaceholder.text != "LOADING")
+        {
+            fadein.SetActive(true); // Set GameObject active
+        }
 
 
         GameObject[] buttons = new GameObject[childCount];
@@ -340,6 +347,8 @@ public class ObjectClickHandler : MonoBehaviour
     {
         Debug.Log("Link: " + link);
         // Show a message, open a link, or perform any other action based on the provided link variable
+        openAppFullScreen.OpenBatchwithParamterDebug(link); // Pass the link string or any parameter here
+
     }
 }
 

@@ -15,7 +15,7 @@ public class OpenAppFullScreen : MonoBehaviour
 
     public void OpenBatchwithParamter()
     {
-       
+
 
 #if UNITY_EDITOR
         string appPath = System.IO.Path.Combine(Application.dataPath, batchFilePath);
@@ -28,7 +28,7 @@ public class OpenAppFullScreen : MonoBehaviour
         appPath = System.IO.Path.GetFullPath(appPath);
         //appPath = appPath.Replace("\\", "/");
 
-        
+
         Debug.Log(appPath);
 
         log.text = appPath;
@@ -59,5 +59,10 @@ public class OpenAppFullScreen : MonoBehaviour
         //Start the process
 
 
+    }
+
+    public void OpenBatchwithParamterDebug(string index)
+    {
+        Debug.LogWarning("reference called " + index);
     }
 }
