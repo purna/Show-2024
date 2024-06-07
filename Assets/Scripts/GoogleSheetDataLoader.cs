@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class GoogleSheetDataLoader : MonoBehaviour
 {
     public string googleSheetsURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQy3jQxng4KXs00w7bfcEm7-K3_eA7Ej1XnuIYgMLHp492xzRC59V0bWjNbfLbVYjvrWIHoz5eReIxH/pub?output=csv";
+
+
     private List<string[]> rowData = new List<string[]>();
 
     public bool liveLink = true;
