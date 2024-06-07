@@ -22,6 +22,8 @@ public class ObjectClickHandler : MonoBehaviour
 
     public OpenAppFullScreen openAppFullScreen;
 
+    public bool liveLink = true;
+
 
     bool hasExecuted = false; // Flag to track if the action has been executed
     int currentindex = 0;
@@ -46,12 +48,27 @@ public class ObjectClickHandler : MonoBehaviour
 
     GoogleSheetDataLoader dataLoader;
 
+    LoadTextfile dataLoaderLocal;
+
 
     void Start()
     {
+        if (liveLink == true)
+        {
+            // Load CSV data from Google Sheets
+            Debug.Log("Google Sheets");
+            dataLoader = GetComponent<GoogleSheetDataLoader>();
+            StartCoroutine(dataLoader.StartLoading());
 
-        dataLoader = GetComponent<GoogleSheetDataLoader>();
-        StartCoroutine(dataLoader.StartLoading());
+        }
+        else
+        {
+            // Load CSV data from the art.csv file in the Assets folder
+            Debug.Log("CSV Assets");
+            dataLoaderLocal = GetComponent<LoadTextfile>();
+            StartCoroutine(dataLoaderLocal.StartLoading());
+        }
+
 
 
         // Set buttons to
@@ -191,7 +208,22 @@ public class ObjectClickHandler : MonoBehaviour
 
         // Retrieve row data by row index
         //int rowIndex = 4; // 0-based index for the 5th row
-        string[] data = dataLoader.GetRowData(rowIndex);
+        string[] data;
+
+        if (liveLink == true)
+        {
+            // Load CSV data from Google Sheets
+
+           data = dataLoader.GetRowData(rowIndex);
+
+        }
+        else
+        {
+            // Load CSV data from the art.csv file in the Assets folder
+            data = dataLoaderLocal.GetRowData(rowIndex);
+           
+        }
+
         if (data != null)
         {
 
@@ -200,9 +232,26 @@ public class ObjectClickHandler : MonoBehaviour
             //Debug.LogError("Request Description : " + data[4]);
             textDescriptionPlaceholder.text = data[4];
 
-            StartCoroutine(LoadImage(data[3]));
+            if (liveLink == true)
+            {
+                // Load CSV data from Google Sheets
+                Debug.Log("Google Sheets");
+                StartCoroutine(LoadImage(data[3]));
 
-            StartCoroutine(LoadRawImage(data[3]));
+                StartCoroutine(LoadRawImage(data[3]));
+
+            }
+            else
+            {
+                // Load CSV data from the art.csv file in the Assets folder
+                Debug.Log("CSV Assets");
+                StartCoroutine(LoadImageLocal(data[3]));
+
+                StartCoroutine(LoadRawImageLocal(data[3]));
+            }
+
+
+            
 
             string link = data[1];
             clickButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -226,10 +275,25 @@ public class ObjectClickHandler : MonoBehaviour
                 //Debug.LogError("Request Description : " + data[4]);
                 textDescriptionPlaceholder.text = data[4];
 
+                if (liveLink == true)
+                {
+                    // Load CSV data from Google Sheets
+                    Debug.Log("Google Sheets");
+                    StartCoroutine(LoadImage(data[3]));
 
-                StartCoroutine(LoadImage(data[3]));
+                    StartCoroutine(LoadRawImage(data[3]));
 
-                StartCoroutine(LoadRawImage(data[3]));
+                }
+                else
+                {
+                    // Load CSV data from the art.csv file in the Assets folder
+                    Debug.Log("CSV Assets");
+                    StartCoroutine(LoadImageLocal(data[3]));
+
+                    StartCoroutine(LoadRawImageLocal(data[3]));
+                }
+
+                
 
                 if (data.Count >= 5)
                 {
@@ -278,6 +342,35 @@ public class ObjectClickHandler : MonoBehaviour
         }
     }
 
+    IEnumerator LoadRawImageLocal(string filePath)
+    {
+        // Check if the file exists at the given path
+        if (File.Exists(filePath))
+        {
+            // Read the file data
+            byte[] fileData = File.ReadAllBytes(filePath);
+
+            // Create a new Texture2D and load the image data
+            Texture2D texture = new Texture2D(2, 2);
+            if (texture.LoadImage(fileData))
+            {
+                Debug.Log("Success: Loaded image from " + filePath);
+
+                // Set the texture to the rawImagePlaceholder
+                rawImagePlaceholder.texture = texture;
+            }
+            else
+            {
+                Debug.LogError("Failed to load image from file data.");
+            }
+        }
+        else
+        {
+            Debug.LogError("File not found: " + filePath);
+        }
+
+        yield return null;
+    }
 
     IEnumerator LoadImage(string imageURL)
     {
@@ -302,6 +395,38 @@ public class ObjectClickHandler : MonoBehaviour
         
     }
 
+    IEnumerator LoadImageLocal(string filePath)
+    {
+        // Check if the file exists at the given path
+        if (File.Exists(filePath))
+        {
+            // Read the file data
+            byte[] fileData = File.ReadAllBytes(filePath);
+
+            // Create a new Texture2D and load the image data
+            Texture2D texture = new Texture2D(2, 2);
+            if (texture.LoadImage(fileData))
+            {
+                Debug.Log("Success: Loaded image from " + filePath);
+
+                // Create a sprite from the loaded texture
+                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+
+                // Set the sprite to the imagePlaceholder
+                imagePlaceholder.sprite = sprite;
+            }
+            else
+            {
+                Debug.LogError("Failed to load image from file data.");
+            }
+        }
+        else
+        {
+            Debug.LogError("File not found: " + filePath);
+        }
+
+        yield return null;
+    }
 
     IEnumerator LoadMenuImage(string imageURL, int i)
     {
@@ -339,6 +464,50 @@ public class ObjectClickHandler : MonoBehaviour
                 Debug.Log("Failed to load image. Error: " + www.error);
             }
         }
+    }
+
+    IEnumerator LoadMenuImageLocal(string filePath, int i)
+    {
+        // Check if the file exists at the given path
+        if (File.Exists(filePath))
+        {
+            // Read the file data
+            byte[] fileData = File.ReadAllBytes(filePath);
+
+            // Create a new Texture2D and load the image data
+            Texture2D texture = new Texture2D(2, 2);
+            if (texture.LoadImage(fileData))
+            {
+                Debug.Log("Success: Loaded image from " + filePath);
+
+                // Create a sprite from the loaded texture
+                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+
+                // Assuming containerRect is the GameObject
+                Transform child = containerRect.transform.GetChild(i);
+
+                // Get the Image component of the child object
+                Image imageComponent = child.GetComponent<Image>();
+                if (imageComponent != null)
+                {
+                    imageComponent.sprite = sprite;
+                }
+                else
+                {
+                    Debug.LogError("Child object does not have an Image component.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to load image from file data.");
+            }
+        }
+        else
+        {
+            Debug.LogError("File not found: " + filePath);
+        }
+
+        yield return null;
     }
 
 
