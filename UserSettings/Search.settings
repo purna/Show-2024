@@ -8,6 +8,12 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
+	"last_search.45C55C1A" = "drop t:Texture"
+	"OpenInspectorPreview.45C55C1A" = "0"
+	"currentGroup.45C55C1A" = "asset"
+	"last_search.6DF93126" = "drop t:Texture"
+	"OpenInspectorPreview.6DF93126" = "0"
+	"currentGroup.6DF93126" = "asset"
 }
 providers = {
 	packages = {
@@ -53,6 +59,11 @@ providers = {
 	asset = {
 		active = true
 		priority = 25
+		defaultAction = null
+	}
+	presets_provider = {
+		active = false
+		priority = -10
 		defaultAction = null
 	}
 }

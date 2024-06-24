@@ -14,6 +14,8 @@ public class ObjectClickHandler : MonoBehaviour
     public RawImage rawImagePlaceholder;
     public Button clickButton;
 
+    public Text textButtonIndex;
+
     public int reference;
 
     public GameObject fadein;
@@ -232,28 +234,32 @@ public class ObjectClickHandler : MonoBehaviour
             //Debug.LogError("Request Description : " + data[4]);
             textDescriptionPlaceholder.text = data[4];
 
+            //Refence number
+            textButtonIndex.text = data[1];
+
+
             if (liveLink == true)
             {
                 // Load CSV data from Google Sheets
                 Debug.Log("Google Sheets");
-                StartCoroutine(LoadImage(data[3]));
+                //StartCoroutine(LoadImage(data[3]));
 
-                StartCoroutine(LoadRawImage(data[3]));
+                //StartCoroutine(LoadRawImage(data[3]));
 
             }
             else
             {
                 // Load CSV data from the art.csv file in the Assets folder
                 Debug.Log("CSV Assets");
-                StartCoroutine(LoadImageLocal(data[3]));
+                //StartCoroutine(LoadImageLocal(data[3]));
 
-                StartCoroutine(LoadRawImageLocal(data[3]));
+                //StartCoroutine(LoadRawImageLocal(data[3]));
             }
 
 
             
 
-            string link = data[1];
+            string link = data[0];
             clickButton.GetComponent<Button>().onClick.RemoveAllListeners();
             clickButton.GetComponent<Button>().onClick.AddListener(() => OnPlaceholderButtonClicked(link));
 
@@ -275,22 +281,25 @@ public class ObjectClickHandler : MonoBehaviour
                 //Debug.LogError("Request Description : " + data[4]);
                 textDescriptionPlaceholder.text = data[4];
 
+                //Button Refernce
+                textButtonIndex.text = data[1];
+
                 if (liveLink == true)
                 {
                     // Load CSV data from Google Sheets
                     Debug.Log("Google Sheets");
-                    StartCoroutine(LoadImage(data[3]));
+                    //StartCoroutine(LoadImage(data[3]));
 
-                    StartCoroutine(LoadRawImage(data[3]));
+                    //StartCoroutine(LoadRawImage(data[3]));
 
                 }
                 else
                 {
                     // Load CSV data from the art.csv file in the Assets folder
                     Debug.Log("CSV Assets");
-                    StartCoroutine(LoadImageLocal(data[3]));
+                    //StartCoroutine(LoadImageLocal(data[3]));
 
-                    StartCoroutine(LoadRawImageLocal(data[3]));
+                    //StartCoroutine(LoadRawImageLocal(data[3]));
                 }
 
                 
@@ -298,7 +307,7 @@ public class ObjectClickHandler : MonoBehaviour
                 if (data.Count >= 5)
                 {
 
-                    string link = data[1];
+                    string link = data[0];
                     clickButton.GetComponent<Button>().onClick.RemoveAllListeners();
                     clickButton.GetComponent<Button>().onClick.AddListener(() => OnPlaceholderButtonClicked(link));
 

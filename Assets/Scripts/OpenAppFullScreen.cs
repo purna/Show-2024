@@ -9,13 +9,14 @@ using Debug = UnityEngine.Debug;
 public class OpenAppFullScreen : MonoBehaviour
 {
     public string batchFilePath;
-    public string parameter;
+    //public string parameter;
 
     public TMP_Text log;
 
-    public void OpenBatchwithParamter()
+    public void OpenBatchwithParamter(string parameter)
     {
 
+        Debug.LogWarning("reference called " + parameter);
 
 #if UNITY_EDITOR
         string appPath = System.IO.Path.Combine(Application.dataPath, batchFilePath);
